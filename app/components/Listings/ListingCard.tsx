@@ -1,11 +1,62 @@
 "use client"
 
+import useCountries from "@/app/hooks/useCountries";
+import { Listing, Reservation, User } from "@prisma/client"
+import { useRouter } from "next/navigation";
+import React, { useCallback, useMemo } from "react";
+import { format } from 'date-fns'
 interface ListingProps {
-    data: any,
+    data: Listing;
+    reservation?: Reservation;
+    currentUser: User |  null;
+    disabled?: boolean;
+    actionLabel?: string;
+    actionId?: string;
+    onAction? : (id: string) => void;
 }
-const ListingCard:React.FC<ListingProps> = ({data}) => {
+const ListingCard:React.FC<ListingProps> = ({
+    data,
+    reservation,
+    actionId = "",
+    actionLabel,
+    onAction,
+    disabled,
+    currentUser,
+
+}) => {
+    const router = useRouter();
+    const { getByValue } = useCountries();
+
+    const location = getByValue(data.locationValue);
+
+    const handeledCancel = useCallback((e: React.MouseEvent<HTMLButtonElement>)=>{
+      e.stopPropagation();
+
+      if(disabled) return;
+      onAction?.(actionId);
+    },[onAction, actionId, disabled])
+
+    const price = useMemo(()=> {
+      if(reservation){
+        return reservation.totalPrice
+      }
+
+      return data.price;
+    }, [reservation, data.price])
+
+    const reservationDate = useMemo(()=>{
+      if(!reservation) return null;
+
+      const start = new Date(reservation.startDate);
+      const end = new Date(reservation.endDate);
+
+      return `${format(start,'PP')} - ${format(end,'PP')}`
+    },[reservation])
+
   return (
-    <div>{data.title}</div>
+    <div className="col-span-1 cursor-pointer group" onClick={()=> router.push(`/listings/${data.id}`)}>
+        {data.title}
+    </div>
   )
 }
 
