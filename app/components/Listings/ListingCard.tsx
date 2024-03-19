@@ -8,6 +8,7 @@ import { format } from 'date-fns'
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import Button from "../Button/Button";
+import useLoginModal from "@/app/hooks/useLoginModal";
 interface ListingProps {
     data: Listing;
     reservation?: Reservation;
@@ -28,6 +29,7 @@ const ListingCard:React.FC<ListingProps> = ({
 
 }) => {
     const router = useRouter();
+    const loginModal = useLoginModal();
     const { getByValue } = useCountries();
 
     const location = getByValue(data.locationValue);
@@ -57,7 +59,7 @@ const ListingCard:React.FC<ListingProps> = ({
     },[reservation])
 
   return (
-    <div className="col-span-1 cursor-pointer group" onClick={()=> router.push(`/listings/${data.id}`)}>
+    <div className="col-span-1 cursor-pointer group" onClick={()=> currentUser ? router.push(`/listings/${data.id}`) : loginModal.onOpen()}>
       <div className="flex flex-col gap-2 w-full">
          <div className="aspect-square w-full relative overflow-hidden rounded-xl">
            <Image fill alt="Image" src={data.imageSrc} className="object-cover h-full w-full group-hover:scale-110 transition"/>
