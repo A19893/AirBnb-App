@@ -8,9 +8,10 @@ import { format } from 'date-fns'
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import Button from "../Button/Button";
+import { SafeReservation } from "@/app/types";
 interface ListingProps {
     data: Listing;
-    reservation?: Reservation;
+    reservation?: SafeReservation;
     currentUser: User |  null;
     disabled?: boolean;
     actionLabel?: string;

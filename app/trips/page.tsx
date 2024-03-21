@@ -22,7 +22,6 @@ const Trips = async () => {
     const reservations = await getReservations({
         userId: currentUser.id
     })
-
     if(reservations.length === 0) {
         return (
         <ClientOnly>
