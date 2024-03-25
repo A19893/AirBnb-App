@@ -8,6 +8,7 @@ import LoginModal from "./components/Modals/LoginModal";
 import getCurrentUser from "./actions/getCurrentUser";
 import RentModal from "./components/Modals/RentModal";
 import ClientOnly from "./components/ClientOnly";
+import SearchModal from "./components/Modals/SearchModal";
 
 export const metadata: Metadata = {
   title: "Airbnb",
@@ -32,6 +33,7 @@ export default async function RootLayout({
         <RegisterModal />
         <LoginModal />
         <RentModal/>
+        <SearchModal/>
         <Navbar currentUser={currentUser}/>
         </ClientOnly>
         <div className="pb-20 pt-28">

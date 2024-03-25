@@ -21,6 +21,7 @@ export default async function Home({searchParams}: HomeParams) {
       </ClientOnly>
     )
   }
+
   return (
     <ClientOnly>
       <Container>

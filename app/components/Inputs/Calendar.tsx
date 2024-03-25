@@ -5,7 +5,7 @@ import 'react-date-range/dist/theme/default.css';
 
 interface CaldenarProps {
     value: Range;
-    disabledDates: Date[];
+    disabledDates?: Date[];
     onChange: (value: any) => void;
 }
 const Calendar:React.FC<CaldenarProps> = ({
