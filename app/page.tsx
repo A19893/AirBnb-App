@@ -1,13 +1,17 @@
 import { Listing } from "@prisma/client";
 import getCurrentUser from "./actions/getCurrentUser";
-import getListings from "./actions/getListings";
+import getListings, { IListingParams } from "./actions/getListings";
 import ClientOnly from "./components/ClientOnly";
 import EmptyState from "./components/EmptyState";
 import ListingCard from "./components/Listings/ListingCard";
 import Container from "./components/container/Container";
 
-export default async function Home() {
-  const listings = await getListings();
+interface HomeParams {
+  searchParams: IListingParams
+}
+
+export default async function Home({searchParams}: HomeParams) {
+  const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
 
   if(listings.length == 0) {

@@ -3,32 +3,30 @@ import ClientOnly from '../components/ClientOnly';
 import EmptyState from '../components/EmptyState';
 
 import getCurrentUser from '../actions/getCurrentUser';
-import getReservations from '../actions/getReservations';
-import TripsClient from './TripsClient';
+import FavoriteClient from './FavoriteClient';
+import { getFavoriteListings } from '../actions/getFavoriteListings';
 
-const Trips = async () => {
+const Favorites = async () => {
     const currentUser = await getCurrentUser();
     if(!currentUser) {
     return (
      <ClientOnly>
         <EmptyState
           title='Unauthorized'
-          subtitle='Please login' 
+          subtitle='Please login'
         />
      </ClientOnly>
     )
     }
 
-    const reservations = await getReservations({
-        userId: currentUser.id
-    })
+    const favorites = await getFavoriteListings()
 
-    if(reservations.length === 0) {
+    if(favorites.length === 0) {
         return (
         <ClientOnly>
           <EmptyState
-          title='No trips found'
-          subtitle='Looks like you havent reserved any trips'
+          title='No favorites found'
+          subtitle='Looks like you have no favorites'
           />
         </ClientOnly>
         )
@@ -36,9 +34,12 @@ const Trips = async () => {
 
     return (
         <ClientOnly>
-            <TripsClient reservations={reservations} currentUser = {currentUser}/>
+            <FavoriteClient
+             listings={favorites}
+             currentUser={currentUser}
+            />
         </ClientOnly>
     )
 }
 
-export default Trips
+export default Favorites
